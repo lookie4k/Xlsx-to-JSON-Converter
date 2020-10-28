@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="libs/xlsx.full.min.js"></script>
+        <script type="text/javascript" src="libs/xlsx.js"></script>
+        <script type="text/javascript" src="xlsx-to-json-converter.js"></script>
+    </head>
+    <body>
+        select xlsx file : <input type="file" onchange="handleXlsx(event)"/>
+    </body>
+
+    <script type="text/javascript">
+        var handleXlsx = function(e) {
+            var files = e.target.files;
+            var file;
+            for (var i = 0; i != files.length; ++i) {
+                file = files[i];
+                var reader = new FileReader();
+                var name = file.name;
+        
+                reader.onload = function(e) {
+                    var data = e.target.result;
+                    console.log("data", data);
+
+                    workbook = XLSX.read(data, {type: 'binary'});
+        
+                    /* 워크북 처리 */
+                    workbook.SheetNames.forEach(function(item, index, array) {
+
+                        console.log(workbook.Sheets[item]);
+        
+                        var csv = XLSX.utils.sheet_to_csv(workbook.Sheets[item]);
+                        var html = XLSX.utils.sheet_to_html(workbook.Sheets[item]);
+                        var json = XLSX.utils.sheet_to_json(workbook.Sheets[item]);
+                        var formulae = XLSX.utils.sheet_to_formulae(workbook.Sheets[item]);
+        
+                        console.log(csv);
+                        console.log(html);
+                        console.log(json);
+                        console.log(formulae);
+                    });
+                }
+
+
+                reader.readAsBinaryString(file);
+            }
+        }
+    </script>
+</html>
