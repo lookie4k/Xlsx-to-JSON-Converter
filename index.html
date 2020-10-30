@@ -23,6 +23,8 @@
                     console.log("data", data);
 
                     workbook = XLSX.read(data, {type: 'binary'});
+
+                    console.log(workbook);
         
                     /* 워크북 처리 */
                     workbook.SheetNames.forEach(function(item, index, array) {
@@ -38,7 +40,11 @@
                         console.log(html);
                         console.log(json);
                         console.log(formulae);
+
+                        
                     });
+
+
                 }
 
 
