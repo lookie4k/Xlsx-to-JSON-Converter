@@ -10,6 +10,51 @@
     </body>
 
     <script type="text/javascript">
+
+
+        function col2num(s) {
+            var ans = 0;
+            for (var i = 0; i < s.length; i++) {
+                ans = ans * 26 + s.charCodeAt(i) - 64;
+            }
+            return ans - 1;
+        }
+        function num2col(n) {
+            var ans = '';
+            for (n++; n --> 0; n = (n - (n % 26)) / 26) {
+                ans = String.fromCharCode((n % 26) + 65) + ans;
+            } 
+            return ans;
+        }
+        function parseCell(s) {
+            var m = s.match(/([A-Z]+)([0-9]+)/);
+            if (m !== null) {
+                return [col2num(m[1]), Number(m[2]) - 1, m[0]];
+            }
+        }
+        function tabulate(sheet){
+            var rows = [];
+            
+            Object.keys(sheet).map(parseCell).filter(function(x) {
+                return x!== undefined;
+            }).forEach(function(parsedKey){
+                var key = parsedKey[2],
+                col = parsedKey[0],
+                row = parsedKey[1],
+                val = sheet[key].v;
+
+                if (undefined === rows[row]) {
+                    rows[row] = [];
+                }
+
+                rows[row][col] = val;
+            });     
+            return rows;
+        }
+
+        var getValueFromCell = function() {
+        }
+
         var handleXlsx = function(e) {
             var files = e.target.files;
             var file;
@@ -29,7 +74,7 @@
                     /* 워크북 처리 */
                     workbook.SheetNames.forEach(function(item, index, array) {
 
-                        console.log(workbook.Sheets[item]);
+                        console.log(tabulate(workbook.Sheets[item]));
         
                         var csv = XLSX.utils.sheet_to_csv(workbook.Sheets[item]);
                         var html = XLSX.utils.sheet_to_html(workbook.Sheets[item]);
