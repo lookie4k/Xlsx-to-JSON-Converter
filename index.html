@@ -11,47 +11,6 @@
 
     <script type="text/javascript">
 
-
-        function col2num(s) {
-            var ans = 0;
-            for (var i = 0; i < s.length; i++) {
-                ans = ans * 26 + s.charCodeAt(i) - 64;
-            }
-            return ans - 1;
-        }
-        function num2col(n) {
-            var ans = '';
-            for (n++; n --> 0; n = (n - (n % 26)) / 26) {
-                ans = String.fromCharCode((n % 26) + 65) + ans;
-            } 
-            return ans;
-        }
-        function parseCell(s) {
-            var m = s.match(/([A-Z]+)([0-9]+)/);
-            if (m !== null) {
-                return [col2num(m[1]), Number(m[2]) - 1, m[0]];
-            }
-        }
-        function tabulate(sheet){
-            var rows = [];
-            
-            Object.keys(sheet).map(parseCell).filter(function(x) {
-                return x!== undefined;
-            }).forEach(function(parsedKey){
-                var key = parsedKey[2],
-                col = parsedKey[0],
-                row = parsedKey[1],
-                val = sheet[key].v;
-
-                if (undefined === rows[row]) {
-                    rows[row] = [];
-                }
-
-                rows[row][col] = val;
-            });     
-            return rows;
-        }
-
         var getValueFromCell = function() {
         }
 
@@ -65,29 +24,30 @@
         
                 reader.onload = function(e) {
                     var data = e.target.result;
-                    console.log("data", data);
-
                     workbook = XLSX.read(data, {type: 'binary'});
 
-                    console.log(workbook);
+                    var converter = new XlsxToJsonConverter(workbook);
+                    converter.convert();
         
-                    /* 워크북 처리 */
-                    workbook.SheetNames.forEach(function(item, index, array) {
+                    // /* 워크북 처리 */
+                    // workbook.SheetNames.forEach(function(item, index, array) {
 
-                        console.log(tabulate(workbook.Sheets[item]));
-        
-                        var csv = XLSX.utils.sheet_to_csv(workbook.Sheets[item]);
-                        var html = XLSX.utils.sheet_to_html(workbook.Sheets[item]);
-                        var json = XLSX.utils.sheet_to_json(workbook.Sheets[item]);
-                        var formulae = XLSX.utils.sheet_to_formulae(workbook.Sheets[item]);
-        
-                        console.log(csv);
-                        console.log(html);
-                        console.log(json);
-                        console.log(formulae);
+                    //     console.log(workbook.Sheets[item]);
+                    //     var table = tabulateToArray(workbook.Sheets[item]);
+                    //     var json = tableArrayToJson(table, workbook.Sheets[item]["!merges"]);
 
+                    //     console.log(json);
                         
-                    });
+                    //     // var csv = XLSX.utils.sheet_to_csv(workbook.Sheets[item]);
+                    //     // var html = XLSX.utils.sheet_to_html(workbook.Sheets[item]);
+                    //     // var json = XLSX.utils.sheet_to_json(workbook.Sheets[item]);
+                    //     // var formulae = XLSX.utils.sheet_to_formulae(workbook.Sheets[item]);
+        
+                    //     // console.log(csv);
+                    //     // console.log(html);
+                    //     // console.log(json);
+                    //     // console.log(formulae);
+                    // });
 
 
                 }
