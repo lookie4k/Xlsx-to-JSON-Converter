@@ -90,6 +90,8 @@ XlsxToJsonConverter.prototype.util = (function() {
                 var value = rowArray[column];
             // rowArray.forEach(function(value, column) {
                 if (value === undefined) {
+                    
+
                     continue;
                 }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
@@ -127,7 +129,7 @@ XlsxToJsonConverter.prototype.util = (function() {
 
                     var type = value.replace(/(\w+|\[(.+?)\])/g, "");
 
-                    for (var i = refKeys.length; i > 0; i++) {
+                    for (var i = refKeys.length; i > 0; i--) {
                         
                     }
 
@@ -138,7 +140,6 @@ XlsxToJsonConverter.prototype.util = (function() {
                 //     var refKeys = (value.match(/(?<=\[).+?(?=\])/g) || []).map(function(value) {
                 //         return isNaN(value) ? value : parseInt(value);
                 //     });
-    
                 //     console.log(key, refKeys);
     
                     // if (key !== "null") {
