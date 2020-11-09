@@ -23,11 +23,13 @@ XlsxToJsonConverter.prototype.convert = function(sheetName) {
 
     this.workbook.SheetNames.forEach(function(item, index, array) {
 
-        console.log(workbook.Sheets[item]);
-        var table = ctxt.util.tabulateToArray(workbook.Sheets[item]);
-        var json = ctxt.util.tableArrayToJson(table, workbook.Sheets[item]["!merges"]);
+        // console.log(workbook.Sheets[item]);
+        // var table = ctxt.util.tabulateToArray(workbook.Sheets[item]);
+        // var json = ctxt.util.tableArrayToJson(table, workbook.Sheets[item]["!merges"]);
 
-        console.log(json);
+        // console.log(json);
+
+        console.log(ctxt.util.sheetToJson(ctxt.workbook, item));
     });
 }
 
@@ -78,6 +80,85 @@ XlsxToJsonConverter.prototype.util = (function() {
     }
     
     // function getMergeCellValue(tableArray)
+
+    function sheetToJson(workbook, sheetName) {
+        var sheet = workbook.Sheets[sheetName];
+
+        console.log(sheet);
+
+        var tableArray = tabulateToArray(sheet);
+        tableArray.forEach(function(rowArray, row) {
+            var obj = {};
+            var refs = [];
+            var values = [];
+            var isValue = false;
+    
+            for (var column = 0; column < rowArray.length; column++) {
+                var value = rowArray[column];
+            // rowArray.forEach(function(value, column) {
+                if (value === undefined) {
+                    zz
+
+                    continue;
+                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                
+                if (!isValue && value.charAt(0) === "$") {
+                    var ref = value.replace(/\$(.*?)/g, "$1");
+                    var type = value.substring(ref.length);
+                    // key = key.substring(1);
+    
+                    refs.push(ref);
+    
+                    // switch (type) {
+                    //     case "[]": reference[key] = []; break;
+                    //     case "{}": reference[key] = {}; break;
+                    //     // default: 
+                    // }
+                    // value.replace("$", )
+                } else {
+                    isValue = false;
+                }
+            }
+    
+            // console.log(refs);
+    
+            refs.forEach(function(ref) {
+                var tempRef;
+
+
+    
+                ref.split(".").reverse().forEach(function(value) {
+                    var key = String(/\w+/.exec(ref));
+                    var refKeys = (value.match(/(?<=\[).+?(?=\])/g) || []).map(function(value) {
+                        return isNaN(value) ? value : parseInt(value);
+                    });
+
+                    var type = value.replace(/(\w+|\[(.+?)\])/g, "");
+
+                    for (var i = refKeys.length; i > 0; i--) {
+                        
+                    }
+
+                    console.log(ref, key, refKeys);
+                });
+                // ref.split('.').map(function(value) {
+                //     var key = String(/\w+/.exec(ref));
+                //     var refKeys = (value.match(/(?<=\[).+?(?=\])/g) || []).map(function(value) {
+                //         return isNaN(value) ? value : parseInt(value);
+                //     });
+                //     console.log(key, refKeys);
+    
+                    // if (key !== "null") {
+                    //     tempRef
+                    // }f
+                // })
+            });
+            // });
+        });
+    
+        return tableArray;
+    }
     
     function tableArrayToJson(tableArray) {
         tableArray.forEach(function(rowArray, row) {
@@ -90,7 +171,7 @@ XlsxToJsonConverter.prototype.util = (function() {
                 var value = rowArray[column];
             // rowArray.forEach(function(value, column) {
                 if (value === undefined) {
-                    
+                    zz
 
                     continue;
                 }
