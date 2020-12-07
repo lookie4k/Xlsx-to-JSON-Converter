@@ -10,10 +10,6 @@
     </body>
 
     <script type="text/javascript">
-
-        var getValueFromCell = function() {
-        }
-
         var handleXlsx = function(e) {
             var files = e.target.files;
             var file;
@@ -28,28 +24,7 @@
 
                     var converter = new XlsxToJsonConverter(workbook);
                     converter.convert();
-        
-                    // /* 워크북 처리 */
-                    // workbook.SheetNames.forEach(function(item, index, array) {
-
-                    //     console.log(workbook.Sheets[item]);
-                    //     var table = tabulateToArray(workbook.Sheets[item]);
-                    //     var json = tableArrayToJson(table, workbook.Sheets[item]["!merges"]);
-
-                    //     console.log(json);
-                        
-                    //     // var csv = XLSX.utils.sheet_to_csv(workbook.Sheets[item]);
-                    //     // var html = XLSX.utils.sheet_to_html(workbook.Sheets[item]);
-                    //     // var json = XLSX.utils.sheet_to_json(workbook.Sheets[item]);
-                    //     // var formulae = XLSX.utils.sheet_to_formulae(workbook.Sheets[item]);
-        
-                    //     // console.log(csv);
-                    //     // console.log(html);
-                    //     // console.log(json);
-                    //     // console.log(formulae);
-                    // });
-
-
+                    converter.download(name);
                 }
 
 
